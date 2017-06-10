@@ -12,4 +12,4 @@
 ## Install TestRPC and Truffle
 *   Use template on Azure to deploy a VM with TestROC and Truffle installed
 *   Install on Ubuntu Subsystem
-    *   See !ADD URL!
+    *   See [Installation Guide](https://github.com/BlockchainRepos/truffle-testrpc/tree/master/testrpc-setup)
