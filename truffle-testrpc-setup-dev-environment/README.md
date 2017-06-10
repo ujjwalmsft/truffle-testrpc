@@ -10,6 +10,6 @@
     *   `autocomplete-solidity`
 
 ## Install TestRPC and Truffle
-*   Use template on Azure to deploy a VM with TestROC and Truffle installed
+*   Use template on Azure to deploy a VM with TestRPC and Truffle installed
 *   Install on Ubuntu Subsystem
     *   See [Installation Guide](https://github.com/BlockchainRepos/truffle-testrpc/tree/master/testrpc-setup)
