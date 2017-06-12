@@ -20,7 +20,8 @@
 ## Issues
 *   TestRPC permissons issues
     *   `chmod -R 777` on `/usr/lib/node_modules`
-*   Installation error with Truffle still unsolved
+*   Permission error when installing Truffle
+    *   Run `sudo npm install -g truffle@beta`
 
 # Sources
 1.  [How to install Truffle & TestRPC on Ubuntu or Windows 10 with “Windows subsystem for Linux”](https://davidburela.wordpress.com/2017/05/12/how-to-install-truffle-testrpc-on-ubuntu-or-windows-10-with-windows-subsystem-for-linux/)
