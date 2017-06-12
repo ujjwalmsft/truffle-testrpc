@@ -3,6 +3,12 @@ pragma solidity ^0.4.7;
 import "./PledgeAgreement.sol";
 
 contract CreateAgreements {
+    /*
+    * @title Create agreements
+    * @author Dr. Dolittle
+    * @notice Manage administrators and create agreements (respectively related contracts)
+    */
+
     // Variables
     address private owner;
     mapping (address => bool) administrators; // true = administrative role
@@ -41,6 +47,9 @@ contract CreateAgreements {
     }
 
     // Functions
+    /**@dev Set administrators
+      * @param addressOfAdmin   Address of the account of the administrator
+      */
     function setAdministrators (address addressOfAdmin) onlyIfOwner {
         administrators[addressOfAdmin] = true;
         AdministratorsInformation (
@@ -49,10 +58,17 @@ contract CreateAgreements {
         );
     }
 
+    /**@dev Check if a specific adddress has administrative rights
+      * @param addressOfAdmin   Address of the account of the administrator
+      * @return Boolean to indicate if the address has administrative rights (true == administrative rights)
+      */
     function checkAdministrators (address addressOfAdmin) returns (bool) {
         return administrators[addressOfAdmin];
     }
 
+    /**@dev Remove administrative role for a certain address
+      * @param addressOfAdmin   Address of the account of the administrator
+      */
     function removeAdministratorRole (address addressOfAdmin) onlyIfOwner {
         administrators[addressOfAdmin] = false;
         AdministratorsInformation (
@@ -61,6 +77,11 @@ contract CreateAgreements {
         );
     }
 
+    /**@dev Create a contract for the pledge agreement
+      * @param depositAccount   Account number of the deposit account
+      * @param creditAccount   Account number of the credit account
+      * @return The address of the contract created
+      */
     function createPledgeAgreement (string depositAccount, string creditAccount) onlyIfAdministrator(msg.sender) returns (PledgeAgreement) {
         PledgeAgreement newAgreement = new PledgeAgreement(depositAccount, creditAccount);
         AgreementCreated (

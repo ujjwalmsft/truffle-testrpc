@@ -1,6 +1,11 @@
 pragma solidity ^0.4.7;
 
 contract PledgeAgreement {
+    /*
+    * @title Pledge Agreement
+    * @author Dr. Dolittle
+    * @notice Logic of the pledge agreement
+    */
 
     // Variables
     string depositAccount; // Source
@@ -30,6 +35,10 @@ contract PledgeAgreement {
     }
 
     // Functions
+    /**@dev Check initial arguments
+      * @param depositAccount   Account number of the deposit account
+      * @param creditAccount   Account number of the credit account
+      */
     function checkInput (string depositAccount, string creditAccount) private {
         bytes memory depositAccountBytes = bytes(depositAccount);
         bytes memory creditAccountBytes = bytes(creditAccount);
@@ -44,7 +53,11 @@ contract PledgeAgreement {
         );
     }
 
-    function openDebt (uint amountDebt) {
+    /**@dev Indicate open debt / payments not received on time
+      * @param amountDebt   Amount not received
+      * @return The amount of debt
+      */
+    function openDebt (uint amountDebt) returns (uint) {
         if (amountDebt <= 0) {
             throw;
         }
@@ -56,8 +69,13 @@ contract PledgeAgreement {
             amountDebt,
             this
         );
+        return amountDebt;
     }
 
+    /**@dev Create a contract for the pledge agreement
+      * @return depositAccount   Account number of the deposit account
+      * @return creditAccount   Account number of the credit account
+      */
     function getInformation () returns (string deposit, string credit) {
         deposit = depositAccount;
         credit = creditAccount;
