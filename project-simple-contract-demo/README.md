@@ -67,8 +67,8 @@ VALUES
 
 # Create UI
 *   Code UI
-    *   Run a server in folder with the files via cmd to test locally
-        *   `python -m SimpleHTTPServer`
+*   Code API to be able to interact with the SQL database
+    *   In this demo written in node.js
 *   Deploy app to Azure via a repository and continuous deployment
 
 # Demonstrate interaction with the Smart Contract
