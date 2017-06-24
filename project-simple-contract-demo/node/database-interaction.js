@@ -6,104 +6,131 @@ var util = require('util');
 var restify = require('restify');
 
 var server = restify.createServer({
-  name: 'database-interaction-server'
+    name: 'database-interaction-server'
 });
 
-server.listen(8080, function() {
-  console.log('%s listening at %s', server.name, server.url);
+server.listen(8080, function () {
+    console.log('%s listening at %s', server.name, server.url);
 });
 
 // Routing
-server.get('/getRecords', function(req, res, next) {
-  var responseObject = getRecords();
-  console.log(responseObject);
-  res.send(responseObject);
-  next();
-});
-server.get('/addRecord', addRecord);
-server.get('/updateRecord', updateRecord);
-server.get('/deleteRecord', deleteRecord);
-//server.head('/hello/:name', respond);
+server.get('/getRecords', getRecords);
+server.get('/addRecord/:contractName/:contractAddress/:partyA/:partyB', addRecord);
+server.get('/updateRecord/:contractAddress/:settlementStatus', updateRecord);
+server.get('/deleteRecord/:contractAddress', deleteRecord);
 
 // Create connection to database
 var config = {
-  userName: 'xxx',
-  password: 'xxx',
-  server: 'xxx',
-  options: {
-      database: 'xxx',
-      encrypt: true
-  }
+    userName: 'xxx',
+    password: 'xxx',
+    server: 'xxx.database.windows.net',
+    options: {
+        database: 'xxx',
+        encrypt: true
+    }
 }
-
-//getRecords();
-//addRecord("Contract4", "0x14", "partyA4", "partyB4");
-//deleteRecord('0x14');
-//updateRecord('0x13', 'true');
 
 var connection = new Connection(config);
 
 // Attempt to connect and execute queries if connection goes through
-connection.on('connect', function(err) {
+connection.on('connect', function (err) {
     if (err) {
-        console.log(err)
+        console.log(err);
     }
-    else{
+    else {
         console.log("Connection established!");
     }
 });
 
-function getRecords(){
+function getRecords(req, res, next) {
     request = new Request(
         "SELECT * FROM Contracts",
-        function(err, rowCount, rows) {
-            console.log(rowCount + ' row(s) returned');
+        function (err, rowCount, rows) {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            else {
+                console.log(rowCount + ' row(s) returned');
+                res.send(records);
+            }
         }
     );
-    
-    request.on('row', function(columns) {
-        var returnObject = {};
-        columns.forEach(function(column) {
-          console.log("%s\t%s", column.metadata.colName, column.value);
-        });  
+
+    var records = [];
+    request.on('row', function (columns) {
+        var record = {};
+        columns.forEach(function (column) {
+            record[column.metadata.colName] = column.value;
+        });
+        records.push(record);
     });
+
     connection.execSql(request);
 }
 
-function addRecord(contractName, contractAddress, partyA, partyB) {
-  var query = util.format("INSERT INTO Contracts (ContractName, ContractAddress, PartyA, PartyB) VALUES ('%s', '%s', '%s', '%s')", contractName, contractAddress, partyA, partyB);
-  request = new Request(
-    query,
-    function(err, rowCount, rows) {
-      console.log(rowCount + ' row(s) inserted');
-    }
-  );
-  connection.execSql(request);
+function addRecord(req, res, next) {
+    var contractName = req.params.contractName;
+    var contractAddress = req.params.contractAddress;
+    var partyA = req.params.partyA;
+    var partyB = req.params.partyB;
+    var settlementStatus = false;
+
+    var query = util.format("INSERT INTO Contracts (ContractName, ContractAddress, PartyA, PartyB, SettlementStatus) VALUES ('%s', '%s', '%s', '%s', '%s')", contractName, contractAddress, partyA, partyB, settlementStatus);
+    request = new Request(
+        query,
+        function (err, rowCount, rows) {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            else {
+                console.log(rowCount + ' row(s) inserted');
+                res.send(rowCount + ' row(s) inserted');
+            }
+        }
+    );
+    connection.execSql(request);
 }
 
-function updateRecord(contractAddress, status){
-  var query = util.format("UPDATE Contracts SET SettlementStatus = '%s' WHERE ContractAddress = '%s'", status, contractAddress);
-  console.log(query);
-  request = new Request(
-      query,
-      function(err, rowCount, rows) {
-          console.log(rowCount + ' row(s) updated');
-      }
-  );
-  connection.execSql(request);
+function updateRecord(req, res, next) {
+    var contractAddress = req.params.contractAddress;
+    var settlementStatus = req.params.settlementStatus;
+
+    var query = util.format("UPDATE Contracts SET SettlementStatus = '%s' WHERE ContractAddress = '%s'", settlementStatus, contractAddress);
+    console.log(query);
+    request = new Request(
+        query,
+        function (err, rowCount, rows) {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            else {
+                console.log(rowCount + ' row(s) updated');
+                res.send(rowCount + ' row(s) updated');
+            }
+        }
+    );
+    connection.execSql(request);
 }
 
-function deleteRecord(contractAddress){
-  var query = util.format("DELETE FROM Contracts WHERE ContractAddress = '%s'", contractAddress);
-  request = new Request(
-      query,
-      function(err, rowCount, rows) {
-          console.log(rowCount + ' row(s) returned');
-      }
-  );
-  connection.execSql(request);
-}
+function deleteRecord(req, res, next) {
+    var contractAddress = req.params.contractAddress;
 
-function closeConnection () {
-  connection.close();
+    var query = util.format("DELETE FROM Contracts WHERE ContractAddress = '%s'", contractAddress);
+    request = new Request(
+        query,
+        function (err, rowCount, rows) {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            else {
+                console.log(rowCount + ' row(s) deleted');
+                res.send(rowCount + ' row(s) deleted');
+            }
+        }
+    );
+    connection.execSql(request);
 }
