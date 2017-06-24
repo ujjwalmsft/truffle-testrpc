@@ -11,6 +11,41 @@
     *   `truffle init`
 *   Setup connection to the network in Azure
     *   [Configuration](https://github.com/BlockchainRepos/truffle-testrpc/tree/master/truffle-general)
+*   Deploy SQL database
+    *   Allow IP to access in Server firewall
+    *   Create table (SQL Server Management Studio)
+```
+CREATE TABLE [dbo].[Contracts](
+    [Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY, 
+	[ContractName] [varchar](255) NOT NULL,
+    [ContractAddress] [varchar](255) NOT NULL,
+	[PartyA] [varchar](255) NOT NULL,
+	[PartyB] [varchar](255) NOT NULL,
+    [SettlementStatus] [varchar](5) NOT NULL
+)
+
+GO
+```
+
+*   Add some test data
+```
+USE [dbName]
+
+INSERT INTO dbo.Contracts
+(ContractName, ContractAddress, PartyA, PartyB, SettlementStatus)
+VALUES
+('Contract1', '0x11', 'PartyA1', 'PartyB1', 'false')
+
+INSERT INTO dbo.Contracts
+(ContractName, ContractAddress, PartyA, PartyB)
+VALUES
+('Contract2', '0x12', 'PartyA2', 'PartyB2', 'false')
+
+INSERT INTO dbo.Contracts
+(ContractName, ContractAddress, PartyA, PartyB)
+VALUES
+('Contract3', '0x13', 'PartyA3', 'PartyB3', 'false')
+```
 
 # Create Smart Contract
 
@@ -29,6 +64,12 @@
         *   `geth attach`
         *   `personal.unlockAccount(eth.accounts[0], pwd, 3600)`
     *   `truffle migrate --network azure`
+
+# Create UI
+*   Code UI
+    *   Run a server in folder with the files via cmd to test locally
+        *   `python -m SimpleHTTPServer`
+*   Deploy app to Azure via a repository and continuous deployment
 
 # Demonstrate interaction with the Smart Contract
 
