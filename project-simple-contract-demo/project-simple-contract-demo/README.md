@@ -68,6 +68,8 @@ VALUES
 # Create UI
 *   Code UI
 	*	App
+		*	When installing dependencies use `npm install <packageName> --save`
+			*	With that it gets added to `package.json`
 	*	Database interaction
 	*	Blockchain interaction
 *   Deploy app to Azure via a repository and continuous deployment

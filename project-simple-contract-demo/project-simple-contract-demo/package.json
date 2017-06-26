@@ -10,5 +10,10 @@
   },
   "author": {
     "name": "jozessin"
+  },
+  "dependencies": {
+    "restify": "^4.3.0",
+    "tedious": "^2.0.0",
+    "util": "^0.10.3"
   }
 }

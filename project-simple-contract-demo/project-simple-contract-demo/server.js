@@ -13,7 +13,9 @@ var server = restify.createServer({
 
 server.use(express.static(__dirname + "/app"));
 
-server.listen(8000, function () {
+var port = process.env.PORT || 1337;
+
+server.listen(port, function () {
     console.log('%s listening at %s', server.name, server.url);
 });
 
