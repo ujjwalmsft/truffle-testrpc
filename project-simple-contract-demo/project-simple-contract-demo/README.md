@@ -1,4 +1,4 @@
-# Setup dev environment
+﻿# Setup dev environment
 
 *   Setup Ethereum instance on Azure
     *   Demonstrate portal
@@ -67,8 +67,9 @@ VALUES
 
 # Create UI
 *   Code UI
-*   Code API to be able to interact with the SQL database
-    *   In this demo written in node.js
+	*	App
+	*	Database interaction
+	*	Blockchain interaction
 *   Deploy app to Azure via a repository and continuous deployment
 
 # Demonstrate interaction with the Smart Contract

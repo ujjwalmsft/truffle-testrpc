@@ -1,23 +1,35 @@
-// https://docs.microsoft.com/en-us/azure/sql-database/sql-database-connect-query-nodejs
-
+// Requirements
 var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;
 var util = require('util');
 var restify = require('restify');
+var express = require('express');
 
+
+// Start server
 var server = restify.createServer({
-    name: 'database-interaction-server'
+    name: 'app-server'
 });
 
-server.listen(8080, function () {
+server.use(express.static(__dirname + "/app"));
+
+server.listen(8000, function () {
     console.log('%s listening at %s', server.name, server.url);
 });
 
-// Routing
-server.get('/getRecords', getRecords);
-server.get('/addRecord/:contractName/:contractAddress/:partyA/:partyB', addRecord);
-server.get('/updateRecord/:contractAddress/:settlementStatus', updateRecord);
-server.get('/deleteRecord/:contractAddress', deleteRecord);
+// API
+server.get(/\//, app);
+function app(req, res, next) {
+    restify.serveStatic({
+        directory: './app',
+        file: 'index.html'
+    })
+};
+
+server.post('/api/getRecords', getRecords);
+server.post('/api/addRecord/:contractName/:contractAddress/:partyA/:partyB', addRecord);
+server.post('/api/updateRecord/:contractAddress/:settlementStatus', updateRecord);
+server.post('/api/deleteRecord/:contractAddress', deleteRecord);
 
 // Create connection to database
 var config = {
@@ -30,6 +42,7 @@ var config = {
     }
 }
 
+// Database Connection
 var connection = new Connection(config);
 
 // Attempt to connect and execute queries if connection goes through
