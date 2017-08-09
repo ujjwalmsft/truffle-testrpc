@@ -37,8 +37,10 @@
         *  `var app = contractName.at("address")`
         *  Interact
             *  Get address:     `app.address`
-            *  Call function:   `app.functionName.call()`
-            *  Transaction:     `app.functionName(...)`
+            *  Call function:   `app.functionName.call(param)`
+            *  Transaction:     
+                *   With the receipt as response: `app.functionName(param, {from: address})`
+                *   With the transaction hash as response: `app.functionName.sendTransaction(param, {from: address})`
 
 ## Issues
 *   Be careful with the solidity compiler version. It depends on the truffle version which compiler version is supported!
