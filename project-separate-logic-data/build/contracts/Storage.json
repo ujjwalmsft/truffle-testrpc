@@ -1,0 +1,51 @@
+{
+  "contract_name": "Storage",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "record",
+          "type": "bytes32"
+        },
+        {
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "setUIntValue",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "record",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getUIntValue",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    }
+  ],
+  "unlinked_binary": "0x606060405234610000575b60b4806100186000396000f300606060405263ffffffff60e060020a6000350416633562fd208114602c578063bdc963d814603e575b6000565b34600057603c600435602435605d565b005b34600057604b6004356073565b60408051918252519081900360200190f35b60008281526020819052604090208190555b5050565b6000818152602081905260409020545b9190505600a165627a7a7230582093eb502e645083c71bf2a21f015c5dc17909479950e358c1dbaf2b8fc3b9a5260029",
+  "networks": {
+    "1502457740338": {
+      "links": {},
+      "events": {},
+      "updated_at": 1502458406641,
+      "address": "0xa81ee06038c74dc9bf397ba3d15031ffc27315a5"
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1502458406641
+}
